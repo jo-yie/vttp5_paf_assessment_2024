@@ -1,0 +1,83 @@
+Write your Task 2 answers in this file
+
+Task 2.1 
+--> Importing listings.json into listings_and_reviews collection
+mongoimport 
+    --host=localhost
+    --port=27017
+    --db=bedandbreakfast
+    --collection=listing_and_reviews
+    --type=json
+    --file=listings.json
+
+mongoimport --host=localhost --port=27017 --db=bedandbreakfast --collection=listing_and_reviews --type=json --file=listings.json
+
+Task 2.2 
+--> Creating new collection listings with only Australia locations
+db.listing_and_reviews.aggregate([
+    { $match : { 'address.country' : { $regex : 'Australia', $options : 'i' } } }, 
+    { $out : 'listings' }
+])
+
+Task 2.3 
+--> Creating new collection reviews from listings collection
+db.listings.aggregate([
+    {
+        $unwind : '$reviews'
+    }, 
+    {
+        $set : {
+            _id : '$reviews._id',
+            date : '$reviews.date',
+            listing_id : '$reviews.listing_id',
+            reviewer_name : {
+                $replaceAll : {
+                    input : '$reviews.reviewer_name',
+                    find : ',',
+                    replacement : ''
+                }
+            },  
+            comments : {
+                $replaceAll : {
+                    input : {
+                        $replaceAll : { 
+                            input : '$reviews.comments', 
+                            find : '\n', 
+                            replacement : '' 
+                        }
+                    }, 
+                    find : '\r', 
+                    replacement : ''
+                }
+            }
+        }
+    },
+    {
+        $project : { date : 1, listing_id : 1, reviewer_name : 1, comments : 1 }
+    },
+    {
+        $out : 'reviews'
+    }
+])
+
+Task 2.4 
+--> Permanently delete "reviews" attribute from listings collection
+db.listings.updateMany(
+    {}, 
+    {
+        $unset : { reviews : '' }
+    }
+)
+
+Task 2.5 
+--> Export reviews collection in a CSV file, include only specific fields 
+mongoexport 
+    --host=localhost
+    --port=27017
+    --db=bedandbreakfast 
+    --collection=reviews 
+    --type=csv
+    --fields=date,listing_id,reviewer_name,comments
+    --out=reviews.csv
+
+mongoexport --host=localhost --port=27017 --db=bedandbreakfast --collection=reviews --type=csv --fields=date,listing_id,reviewer_name,comments --out=reviews.csv
