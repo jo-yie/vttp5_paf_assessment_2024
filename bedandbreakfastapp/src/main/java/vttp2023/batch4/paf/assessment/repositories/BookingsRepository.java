@@ -33,11 +33,31 @@ public class BookingsRepository {
 	// IMPORTANT: DO NOT MODIFY THE SIGNATURE OF THIS METHOD.
 	// You may only add throw exceptions to this method
 	public void newUser(User user) {
+
+		template.update(Queries.SQL_CREATE_USER, user.email(), user.name());
+
 	}
 
 	// TODO: Task 6
 	// IMPORTANT: DO NOT MODIFY THE SIGNATURE OF THIS METHOD.
 	// You may only add throw exceptions to this method
 	public void newBookings(Bookings bookings) {
+
+		template.update(Queries.SQL_CREATE_BOOKING, bookings.getBookingId(), bookings.getListingId(), bookings.getDuration(), bookings.getEmail());
+
 	}
+
+	// TASK 6 helper methods 
+	public boolean checkUserExists(String userEmail) {
+
+		SqlRowSet rs = template.queryForRowSet(Queries.SQL_CHECK_USER_EXISTS, userEmail);
+
+		if (rs.next()) {
+			return rs.getBoolean("result");
+		}
+
+		return false;
+
+	}
+
 }

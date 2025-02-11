@@ -15,7 +15,7 @@ public class ForexService {
 	// TODO hide url in app properties 
 	String url = "https://api.frankfurter.app/latest";
 
-	// TODO: Task 5 
+	// Task 5 
 	public float convert(String from, String to, float amount) {
 
 		// ?base=AUD&symbols=SGD

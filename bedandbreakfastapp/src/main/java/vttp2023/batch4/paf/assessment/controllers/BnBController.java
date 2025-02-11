@@ -1,8 +1,10 @@
 package vttp2023.batch4.paf.assessment.controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +22,7 @@ import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import vttp2023.batch4.paf.assessment.models.Accommodation;
+import vttp2023.batch4.paf.assessment.models.Bookings;
 import vttp2023.batch4.paf.assessment.services.ListingsService;
 import vttp2023.batch4.paf.assessment.Utils;
 
@@ -84,6 +89,36 @@ public class BnBController {
 		return ResponseEntity.ok(Utils.toJson(opt.get()).toString());
 	}
 
+	// {"name":"dsadsa","email":"asdsd@gmail.com","nights":2,"id":"10109896"}
 	// TODO: Task 6
+	@PostMapping("/accommodation")
+	public ResponseEntity<Object> bookAccommodation(@RequestBody Document requestBody) {
+
+		System.out.println(requestBody);
+
+		// create Bookings object 
+		Bookings b = new Bookings(); 
+
+		b.setListingId(requestBody.getString("id"));
+		b.setName(requestBody.getString("name"));
+		b.setEmail(requestBody.getString("email"));
+		b.setDuration(requestBody.getInteger("nights"));
+
+
+		try {
+			
+			listingsSvc.createBooking(b);
+
+			return ResponseEntity.ok().build();
+
+		} catch (Exception e) {
+
+			return ResponseEntity.status(500)
+				.body(Map.of("Error", e.getMessage()));
+
+		}
+
+
+	}
 
 }
