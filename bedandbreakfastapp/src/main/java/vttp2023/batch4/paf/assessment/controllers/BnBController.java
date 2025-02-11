@@ -90,7 +90,7 @@ public class BnBController {
 	}
 
 	// {"name":"dsadsa","email":"asdsd@gmail.com","nights":2,"id":"10109896"}
-	// TODO: Task 6
+	// Task 6
 	@PostMapping("/accommodation")
 	public ResponseEntity<Object> bookAccommodation(@RequestBody Document requestBody) {
 
@@ -108,7 +108,6 @@ public class BnBController {
 		try {
 			
 			listingsSvc.createBooking(b);
-
 			return ResponseEntity.ok().build();
 
 		} catch (Exception e) {
@@ -117,6 +116,9 @@ public class BnBController {
 				.body(Map.of("Error", e.getMessage()));
 
 		}
+
+		// listingsSvc.createBooking(b);
+		// return ResponseEntity.ok().build();
 
 
 	}

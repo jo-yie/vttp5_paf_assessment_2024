@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
+import vttp2023.batch4.paf.assessment.exceptions.BookingErrorException;
 import vttp2023.batch4.paf.assessment.models.Bookings;
 import vttp2023.batch4.paf.assessment.models.User;
 
@@ -29,7 +30,7 @@ public class BookingsRepository {
 		return Optional.of(new User(rs.getString("email"), rs.getString("name")));
 	}
 
-	// TODO: Task 6
+	// Task 6
 	// IMPORTANT: DO NOT MODIFY THE SIGNATURE OF THIS METHOD.
 	// You may only add throw exceptions to this method
 	public void newUser(User user) {
@@ -38,12 +39,16 @@ public class BookingsRepository {
 
 	}
 
-	// TODO: Task 6
+	// Task 6
 	// IMPORTANT: DO NOT MODIFY THE SIGNATURE OF THIS METHOD.
 	// You may only add throw exceptions to this method
 	public void newBookings(Bookings bookings) {
 
-		template.update(Queries.SQL_CREATE_BOOKING, bookings.getBookingId(), bookings.getListingId(), bookings.getDuration(), bookings.getEmail());
+		int newBooking = template.update(Queries.SQL_CREATE_BOOKING, bookings.getBookingId(), bookings.getListingId(), bookings.getDuration(), bookings.getEmail());
+
+		if (newBooking < 1) {
+			throw new BookingErrorException("Failed to book");
+		}
 
 	}
 

@@ -15,7 +15,6 @@ import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.redis.connection.zset.Aggregate;
 import org.springframework.stereotype.Repository;
 
 import static vttp2023.batch4.paf.assessment.repositories.Constants.*;

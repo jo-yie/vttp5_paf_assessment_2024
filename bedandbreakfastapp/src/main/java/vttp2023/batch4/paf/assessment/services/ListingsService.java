@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import vttp2023.batch4.paf.assessment.models.Accommodation;
 import vttp2023.batch4.paf.assessment.models.AccommodationSummary;
@@ -58,20 +59,19 @@ public class ListingsService {
 		return opt;
 	}
 
-	// TODO: Task 6 
+	// Task 6 
 	// IMPORTANT: DO NOT MODIFY THE SIGNATURE OF THIS METHOD.
 	// You may only add annotations and throw exceptions to this method
+	// @Transactional
 	public void createBooking(Bookings booking) {
 
 		if (!bookingsRepo.checkUserExists(booking.getEmail())) {
 
 			User u = new User(booking.getEmail(), booking.getName());
 			bookingsRepo.newUser(u);
-			bookingsRepo.newUser(u);
 
 		}
 
-		// create booking
 		bookingsRepo.newBookings(booking);
 
 	}

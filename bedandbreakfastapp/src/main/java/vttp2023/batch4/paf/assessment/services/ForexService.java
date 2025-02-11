@@ -3,6 +3,7 @@ package vttp2023.batch4.paf.assessment.services;
 import java.util.LinkedHashMap;
 
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,11 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class ForexService {
 
-	// TODO hide url in app properties 
-	String url = "https://api.frankfurter.app/latest";
+	// hide url in app properties 
+	// String url = "https://api.frankfurter.app/latest";
+
+	@Value("${frankfurter.api.url}")
+	private String url;
 
 	// Task 5 
 	public float convert(String from, String to, float amount) {
