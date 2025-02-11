@@ -113,9 +113,32 @@ public class ListingsRepository {
 
 		Aggregation pipeline = Aggregation.newAggregation(matchOperation, sortOperation, projectionOperation);
 
-		List<AccommodationSummary> documents = template.aggregate(pipeline, C_LISTINGS, AccommodationSummary.class).getMappedResults();
+		List<Document> documents = template.aggregate(pipeline, C_LISTINGS, Document.class).getMappedResults();
 
-		return documents;
+		List<AccommodationSummary> accommodationSummaries = new ArrayList<>();
+
+		for (Document d : documents) {
+			AccommodationSummary a = docToAccommodationSummary(d);
+			accommodationSummaries.add(a);
+
+		}
+
+		return accommodationSummaries;
+	}
+
+	// TASK 4 helper method 
+	// Document --> AccomodationSummary
+	public AccommodationSummary docToAccommodationSummary(Document doc) {
+
+		AccommodationSummary a = new AccommodationSummary(); 
+		
+		a.setId(doc.getString("_id"));
+		a.setName(doc.getString("name"));
+		a.setAccomodates(doc.getInteger("accommodates"));
+		a.setPrice(doc.get("price", Number.class).floatValue());
+
+		return a;
+
 	}
 
 	// IMPORTANT: DO NOT MODIFY THIS METHOD UNLESS REQUESTED TO DO SO

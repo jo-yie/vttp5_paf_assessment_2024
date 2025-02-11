@@ -1,7 +1,5 @@
 package vttp2023.batch4.paf.assessment.models;
 
-import org.springframework.data.mongodb.core.mapping.Field;
-
 // IMPORTANT: DO NOT MODIFY THIS CLASS
 // If this class is changed, any assessment task relying on this class will
 // not be marked
@@ -9,9 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class AccommodationSummary {
 	private String id; // _id
 	private String name; // name
-
-	// TODO edited to add field
-	@Field("accommodates")
 	private int accomodates; // accommodates
 	private float price; // price
 
